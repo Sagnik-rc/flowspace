@@ -446,6 +446,12 @@ export function AppProvider({ children }) {
     finally { setFloatBusy(false); }
   };
 
+  /* ── FOOTER MODALS ─────────────────────────────────────────────────── */
+  const [showLegal, setShowLegal] = useState(false);
+  const [legalTab, setLegalTab]   = useState("privacy"); // privacy, terms
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackTab, setFeedbackTab]   = useState("issue"); // issue, feature, general
+
   /* ── EXPOSE EVERYTHING ─────────────────────────────────────────────── */
   const value = {
     // Auth
@@ -501,6 +507,9 @@ export function AppProvider({ children }) {
     // FloatingAI
     floatOpen, setFloatOpen, showGreet, setShowGreet, floatMsgs, floatIn, setFloatIn,
     floatBusy, floatEndRef, sendFloat,
+    // Footer Modals
+    showLegal, setShowLegal, legalTab, setLegalTab,
+    showFeedback, setShowFeedback, feedbackTab, setFeedbackTab,
     // Extra refs
     FREE_LIMITS, POM_FORMATS, LANGS, AUTO_LOCK_OPTIONS,
   };

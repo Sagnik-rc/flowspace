@@ -3,7 +3,7 @@ import { useApp } from "../context/AppContext";
 import { Sparkles, Timer, Code2, Shield, ArrowRight, Zap, Target, BookOpen, Quote } from "lucide-react";
 
 export default function Landing() {
-  const { T, accent, bodyFont, setShowAuth } = useApp();
+  const { T, accent, bodyFont, setShowAuth, setFeedbackTab, setShowFeedback, setLegalTab, setShowLegal } = useApp();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,25 @@ export default function Landing() {
   };
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", position: "relative", zIndex: 1, padding: "0", display: "flex", flexDirection: "column", minHeight: "100%", opacity: mounted ? 1 : 0, transition: "opacity .8s ease-in-out" }}>
+    <div style={{ flex: 1, overflowY: "auto", overflowX: "hidden", position: "relative", zIndex: 1, padding: "0", display: "flex", flexDirection: "column", minHeight: "100%", opacity: mounted ? 1 : 0, transition: "opacity .8s ease-in-out" }}>
+      
+      <style>{`
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .interactive-bar { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s; cursor: crosshair; }
+        .interactive-bar:hover { transform: scaleY(1.05) translateY(-4px); filter: brightness(1.2); }
+        .interactive-bar .tooltip { opacity: 0; transform: translateY(10px); transition: all 0.2s; }
+        .interactive-bar:hover .tooltip { opacity: 1; transform: translateY(-8px); }
+        
+        .interactive-ring { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s; cursor: crosshair; }
+        .interactive-ring:hover { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(0,229,255,0.4)); }
+        .interactive-ring .tooltip { opacity: 0; transform: translateY(10px); transition: all 0.2s; }
+        .interactive-ring:hover .tooltip { opacity: 1; transform: translateY(-10px); }
+
+        .interactive-line { transition: transform 0.3s ease; cursor: crosshair; }
+        .interactive-line:hover { transform: translateY(-4px); }
+        .interactive-line .tooltip { opacity: 0; transition: all 0.2s; }
+        .interactive-line:hover .tooltip { opacity: 1; transform: translateY(-5px); }
+      `}</style>
       
       {/* ── Fixed Clean Header for Landing ────────────────────────────── */}
       <header style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "20px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", zIndex: 10 }}>
@@ -112,14 +130,16 @@ export default function Landing() {
               <h4 style={{ color: T.text, fontSize: "18px", fontWeight: "700", marginBottom: "30px", fontFamily: "Syne" }}>Avg Weekly Focus Hours</h4>
               <div style={{ display: "flex", alignItems: "flex-end", gap: "20px", height: "160px", paddingBottom: "10px", borderBottom: `2px solid ${T.border}` }}>
                 {/* Non User Bar */}
-                <div style={{ flex: 1, position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                <div className="interactive-bar" style={{ flex: 1, position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", height: "100%", justifyContent: "flex-end" }}>
+                  <div className="tooltip" style={{ position: "absolute", top: "-30px", background: T.sidebar, color: T.text, fontSize: "12px", padding: "4px 8px", borderRadius: "6px", border: `1px solid ${T.border}`, boxShadow: "0 8px 16px rgba(0,0,0,0.1)", zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>12 Hours/wk</div>
                   <div style={{ width: "100%", background: `${T.border}`, height: mounted ? "35%" : "0%", borderRadius: "8px 8px 0 0", transition: "height 1.2s ease" }}></div>
-                  <span style={{ color: T.muted, fontSize: "12px", position: "absolute", bottom: "-30px", whiteSpace: "nowrap" }}>Non-User (12h)</span>
+                  <span style={{ color: T.muted, fontSize: "12px", position: "absolute", bottom: "-30px", whiteSpace: "nowrap" }}>Non-User</span>
                 </div>
                 {/* FlowSpace User Bar */}
-                <div style={{ flex: 1, position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                <div className="interactive-bar" style={{ flex: 1, position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", height: "100%", justifyContent: "flex-end" }}>
+                  <div className="tooltip" style={{ position: "absolute", top: "-30px", background: `linear-gradient(135deg,${accent},#00e5ff)`, color: "#fff", fontSize: "12px", fontWeight: 700, padding: "4px 8px", borderRadius: "6px", boxShadow: `0 8px 16px ${accent}40`, zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>32 Hours/wk 🔥</div>
                   <div style={{ width: "100%", background: `linear-gradient(to top, ${accent}, #00e5ff)`, height: mounted ? "90%" : "0%", borderRadius: "8px 8px 0 0", transition: "height 1.5s ease .2s", boxShadow: `0 0 20px ${accent}60` }}></div>
-                  <span style={{ color: T.text, fontSize: "13px", fontWeight: "700", position: "absolute", bottom: "-30px", whiteSpace: "nowrap" }}>FlowSpace (32h)</span>
+                  <span style={{ color: T.text, fontSize: "13px", fontWeight: "700", position: "absolute", bottom: "-30px", whiteSpace: "nowrap" }}>FlowSpace</span>
                 </div>
               </div>
             </div>
@@ -127,7 +147,8 @@ export default function Landing() {
             {/* Pie Chart / Progress Ring */}
             <div style={{ ...bentoStyle, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
               <h4 style={{ color: T.text, fontSize: "18px", fontWeight: "700", marginBottom: "20px", fontFamily: "Syne", width: "100%", alignSelf:"flex-start" }}>Task Completion Rate</h4>
-              <div style={{ position: "relative", width: "140px", height: "140px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div className="interactive-ring" style={{ position: "relative", width: "140px", height: "140px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div className="tooltip" style={{ position: "absolute", top: "-40px", background: `linear-gradient(135deg,${accent},#00e5ff)`, color: "#fff", fontSize: "12px", fontWeight: 700, padding: "4px 8px", borderRadius: "6px", boxShadow: `0 8px 16px ${accent}40`, zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>Top 10% Efficiency</div>
                 <svg width="140" height="140" viewBox="0 0 100 100" style={{ transform: "rotate(-90deg)" }}>
                   <circle cx="50" cy="50" r="40" fill="transparent" stroke={T.inp} strokeWidth="12" />
                   <circle cx="50" cy="50" r="40" fill="transparent" stroke="url(#pieGrad)" strokeWidth="12" strokeDasharray="251.2" strokeDashoffset={mounted ? "40" : "251.2"} strokeLinecap="round" style={{ transition: "stroke-dashoffset 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) .4s" }}/>
@@ -146,7 +167,9 @@ export default function Landing() {
             {/* Line Chart: Burnout Tracker */}
             <div style={{ ...bentoStyle }}>
               <h4 style={{ color: T.text, fontSize: "18px", fontWeight: "700", marginBottom: "20px", fontFamily: "Syne" }}>Burnout Trajectory</h4>
-              <div style={{ position: "relative", height: "140px", width: "100%", marginTop: "20px" }}>
+              <div className="interactive-line" style={{ position: "relative", height: "140px", width: "100%", marginTop: "20px" }}>
+                <div className="tooltip" style={{ position: "absolute", top: "30px", left: "20%", background: T.text, color: T.bg, fontSize: "11px", fontWeight: 700, padding: "4px 8px", borderRadius: "4px", pointerEvents: "none", zIndex: 10 }}>Significant Dropout Curve</div>
+                <div className="tooltip" style={{ position: "absolute", bottom: "30px", right: "20%", background: `linear-gradient(135deg,${accent},#00e5ff)`, color: "#fff", fontSize: "11px", fontWeight: 700, padding: "4px 8px", borderRadius: "4px", pointerEvents: "none", zIndex: 10 }}>Sustained Flow State</div>
                 <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 100">
                   {/* Non-user line */}
                   <path d="M 0 80 Q 25 70, 50 40 T 100 10" fill="transparent" stroke={T.muted} strokeWidth="3" strokeDasharray="6" opacity={0.6}/>
@@ -175,31 +198,48 @@ export default function Landing() {
             </div>
           ))}
         </div>
+      </div>
 
-        {/* ── Wall of Love (Testimonials) ─────────────────────────────── */}
-        <div style={{ width: "100%", marginBottom: "120px" }}>
-          <h2 style={{ fontFamily: "Syne", fontSize: "42px", fontWeight: "800", color: T.text, textAlign: "center", marginBottom: "40px" }}>Wall of Love 🤍</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "24px" }}>
-            {[
-              { text: "Literally carried me through finals week. The auto-locking vault for my study notes is genius.", author: "Sarah J.", role: "CS Student" },
-              { text: "My screen time is down 40% and my grades are up. The minimalist focus timer changed Everything.", author: "Michael T.", role: "Med Student" },
-              { text: "I can write code snippets effortlessly while tracking my pomodoro sessions. Unbelievably aesthetic.", author: "Elena R.", role: "Software Engineer" }
-            ].map((t, i) => (
-              <div key={i} style={{ ...bentoStyle, padding: "28px" }}>
-                <Quote size={28} color={`${accent}40`} style={{ marginBottom: "16px" }}/>
-                <p style={{ color: T.text, fontSize: "16px", lineHeight: "1.6", letterSpacing: "0.2px", marginBottom: "24px" }}>"{t.text}"</p>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: `linear-gradient(135deg, ${accent}, #ff6b6b)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>👩‍💻</div>
-                  <div>
-                    <div style={{ color: T.text, fontWeight: "700", fontSize: "14px" }}>{t.author}</div>
-                    <div style={{ color: T.muted, fontSize: "12px" }}>{t.role}</div>
-                  </div>
+      {/* ── Hall of Love (Testimonials Marquee) - Breakout ────────────── */}
+      <div style={{ width: "100%", position: "relative", marginBottom: "120px", overflow: "hidden", flexShrink: 0, padding: "20px 0" }}>
+        <h2 style={{ fontFamily: "Syne", fontSize: "42px", fontWeight: "800", color: T.text, textAlign: "center", marginBottom: "40px" }}>Hall of Love 🤍</h2>
+        
+        <div style={{ display: "flex", width: "fit-content", animation: "marquee 40s linear infinite" }}>
+          {[
+            { text: "Literally carried me through finals week. The auto-locking vault for my study notes is genius.", author: "Sarah J.", role: "CS Student" },
+            { text: "My screen time is down 40% and my grades are up. The minimalist focus timer changed Everything.", author: "Michael T.", role: "Med Student" },
+            { text: "I can write code snippets effortlessly while tracking my pomodoro sessions. Unbelievably aesthetic.", author: "Elena R.", role: "Software Engineer" },
+            { text: "The glassmorphism UI makes me actually Want to sit down and do my work. I'm addicted to flow state.", author: "David K.", role: "Designer" },
+            { text: "Replaced 4 different apps (Pomodoro, Notion, Spotify, Calendar) into one beautiful dashboard.", author: "Mia L.", role: "Freelancer" },
+            // Duplicate set for seamless looping
+            { text: "Literally carried me through finals week. The auto-locking vault for my study notes is genius.", author: "Sarah J.", role: "CS Student" },
+            { text: "My screen time is down 40% and my grades are up. The minimalist focus timer changed Everything.", author: "Michael T.", role: "Med Student" },
+            { text: "I can write code snippets effortlessly while tracking my pomodoro sessions. Unbelievably aesthetic.", author: "Elena R.", role: "Software Engineer" },
+            { text: "The glassmorphism UI makes me actually Want to sit down and do my work. I'm addicted to flow state.", author: "David K.", role: "Designer" },
+            { text: "Replaced 4 different apps (Pomodoro, Notion, Spotify, Calendar) into one beautiful dashboard.", author: "Mia L.", role: "Freelancer" }
+          ].map((t, i) => (
+            <div key={i} style={{ ...bentoStyle, width: "350px", flexShrink: 0, margin: "0 12px", padding: "28px", backdropFilter: "blur(40px)" }}
+                 onMouseEnter={e => e.currentTarget.parentElement.style.animationPlayState = 'paused'}
+                 onMouseLeave={e => e.currentTarget.parentElement.style.animationPlayState = 'running'}>
+              <Quote size={28} color={`${accent}40`} style={{ marginBottom: "16px" }}/>
+              <p style={{ color: T.text, fontSize: "16px", lineHeight: "1.6", letterSpacing: "0.2px", marginBottom: "24px" }}>"{t.text}"</p>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "auto" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: `linear-gradient(135deg, ${accent}, #ff6b6b)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", flexShrink: 0 }}>👩‍💻</div>
+                <div>
+                  <div style={{ color: T.text, fontWeight: "700", fontSize: "14px" }}>{t.author}</div>
+                  <div style={{ color: T.muted, fontSize: "12px" }}>{t.role}</div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
+        
+        {/* Edge gradients to mask the marquee */}
+        <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: "15%", background: `linear-gradient(to right, ${T.bg}, transparent)`, pointerEvents: "none" }}/>
+        <div style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: "15%", background: `linear-gradient(to left, ${T.bg}, transparent)`, pointerEvents: "none" }}/>
+      </div>
 
+      <div style={{ padding: "0 40px", display: "flex", flexDirection: "column", alignItems: "center", maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
         {/* ── Final CTA ─────────────────────────────────────────────── */}
         <div style={{ ...bentoStyle, background: `radial-gradient(ellipse at center, ${accent}20 0%, ${T.card} 100%)`, width: "100%", textAlign: "center", padding: "80px 40px", border: `1px solid ${accent}50` }}>
           <h2 style={{ fontFamily: "Syne", fontSize: "56px", fontWeight: "800", color: T.text, marginBottom: "20px", letterSpacing: "-1px" }}>Join the cool kids.</h2>
@@ -213,6 +253,73 @@ export default function Landing() {
         </div>
 
       </div>
+
+      {/* ── GenZ Footer ────────────────────────────────────────── */}
+      <footer style={{ width: "100%", background: T.card, borderTop: `1px solid ${T.border}`, padding: "48px 40px", marginTop: "40px", position: "relative", zIndex: 10 }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "40px", justifyContent: "space-between", alignItems: "flex-start" }}>
+          
+          {/* Brand Info */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "300px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{ width: "32px", height: "32px", borderRadius: "8px", flexShrink: 0, background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", boxShadow: `0 0 12px ${accent}60` }}>🌊</div>
+              <span style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "20px", color: T.text }}>FlowSpace</span>
+            </div>
+            <p style={{ color: T.muted, fontSize: "14px", lineHeight: "1.6" }}>The ultimate productivity sanctuary designed for students, developers, and creatives.</p>
+            <button onClick={() => window.open('https://buymeacoffee.com', '_blank')} style={{ background: "linear-gradient(135deg, #FFDD00, #FBB034)", border: "none", borderRadius: "8px", padding: "10px 16px", color: "#000", fontWeight: 800, fontFamily: "Syne", fontSize: "13px", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "8px", width: "fit-content", boxShadow: "0 4px 14px rgba(255, 221, 0, 0.4)", transition: "transform 0.2s" }} onMouseEnter={e => e.currentTarget.style.transform="scale(1.05)"} onMouseLeave={e => e.currentTarget.style.transform="scale(1)"}>
+              ☕ Buy us a coffee
+            </button>
+          </div>
+
+          {/* Links Grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "40px", flex: 1, maxWidth: "700px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <h4 style={{ color: T.text, fontFamily: "Syne", fontWeight: 700, fontSize: "15px", marginBottom: "8px" }}>🔥 Product</h4>
+              {["Explore Features", "Use Cases", "Pricing", "What’s New"].map(link => (
+                <button key={link} onClick={() => setShowAuth(true)} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>{link}</button>
+              ))}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <h4 style={{ color: T.text, fontFamily: "Syne", fontWeight: 700, fontSize: "15px", marginBottom: "8px" }}>🌊 FlowSpace</h4>
+              {["About", "Mission", "Contact", "Support Us ☕"].map(link => (
+                <button key={link} onClick={() => setShowAuth(true)} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>{link}</button>
+              ))}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <h4 style={{ color: T.text, fontFamily: "Syne", fontWeight: 700, fontSize: "15px", marginBottom: "8px" }}>🛠️ Resources</h4>
+              <button onClick={() => { setFeedbackTab("feedback"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Help Center</button>
+              <button onClick={() => { setFeedbackTab("feedback"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Productivity Tips</button>
+              <button onClick={() => { setFeedbackTab("feedback"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Blog</button>
+              <button onClick={() => { setFeedbackTab("issue"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Report Issue</button>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <h4 style={{ color: T.text, fontFamily: "Syne", fontWeight: 700, fontSize: "15px", marginBottom: "8px" }}>⚖️ Legal</h4>
+              <button onClick={() => { setLegalTab("privacy"); setShowLegal(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Privacy Policy</button>
+              <button onClick={() => { setLegalTab("terms"); setShowLegal(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Terms of Service</button>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Bottom Socials Bar */}
+        <div style={{ maxWidth: "1200px", margin: "48px auto 0", paddingTop: "24px", borderTop: `1px solid ${T.border}`, display: "flex", flexWrap: "wrap", gap: "20px", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ color: T.muted, fontSize: "13px" }}>© {new Date().getFullYear()} FlowSpace Inc. All rights reserved. • v1.0.0</div>
+          
+          <div style={{ display: "flex", gap: "12px" }}>
+            {/* X / Twitter */}
+            <a href="https://twitter.com" target="_blank" rel="noreferrer" style={{ width: "36px", height: "36px", borderRadius: "10px", background: T.inp, border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .2s" }} onMouseEnter={e => { e.currentTarget.style.background = `${T.border}`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={e => { e.currentTarget.style.background = T.inp; e.currentTarget.style.transform = "translateY(0)"; }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill={T.text}><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            {/* Instagram */}
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" style={{ width: "36px", height: "36px", borderRadius: "10px", background: T.inp, border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .2s" }} onMouseEnter={e => { e.currentTarget.style.background = `#E1306C20`; e.currentTarget.style.borderColor = `#E1306C60`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={e => { e.currentTarget.style.background = T.inp; e.currentTarget.style.borderColor = T.border; e.currentTarget.style.transform = "translateY(0)"; }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E1306C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            {/* Facebook */}
+            <a href="https://facebook.com" target="_blank" rel="noreferrer" style={{ width: "36px", height: "36px", borderRadius: "10px", background: T.inp, border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .2s" }} onMouseEnter={e => { e.currentTarget.style.background = `#1877F220`; e.currentTarget.style.borderColor = `#1877F260`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={e => { e.currentTarget.style.background = T.inp; e.currentTarget.style.borderColor = T.border; e.currentTarget.style.transform = "translateY(0)"; }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1877F2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

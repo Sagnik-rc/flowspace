@@ -23,12 +23,6 @@ export default function CodeEditor() {
     <div style={{height:"calc(100vh - 70px)",display:"flex",flexDirection:"column",gap:0}}>
       <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"16px",flexShrink:0,flexWrap:"wrap"}}>
         <h2 style={{fontFamily:"Syne",fontWeight:800,fontSize:"42px",color:T.text,margin:"0 0 4px",letterSpacing:"-1px"}}>Code Editor 💻</h2>
-        <div style={{marginLeft:"auto",display:"flex",gap:"12px",flexWrap:"wrap"}}>
-          <button onClick={runCode} style={{...btn(true),padding:"10px 20px",fontSize:"14px",background:`linear-gradient(135deg,${accent},#00e5ff)`,boxShadow:`0 8px 24px ${accent}40`}}><Terminal size={14}/> Run Code</button>
-          <button onClick={copyCode} style={{...btn(copied),padding:"10px 18px",fontSize:"14px"}}>{copied?<><Check size={14}/> Copied!</>:<><Copy size={14}/> Copy</>}</button>
-          <button onClick={downloadFile} style={{...btn(),padding:"7px 13px",fontSize:"13px"}}><Download size={12}/> File</button>
-          <button onClick={downloadAll} style={{...btn(),padding:"7px 13px",fontSize:"13px"}}><Download size={12}/> All</button>
-        </div>
       </div>
       <div style={{display:"flex",flex:1,gap:"11px",minHeight:0}}>
         {/* File sidebar */}
@@ -99,7 +93,7 @@ export default function CodeEditor() {
             <button onClick={()=>addTab(null)} style={{padding:"5px 11px",borderRadius:"8px 8px 0 0",border:`1px solid ${T.border}`,background:T.inp,cursor:"pointer",color:T.muted,fontSize:"15px",lineHeight:1,flexShrink:0}}>+</button>
           </div>
 
-          {/* Language dropdown */}
+          {/* Language dropdown and Tools */}
           <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"7px",flexShrink:0}} ref={langMenuRef}>
             <div style={{position:"relative"}}>
               <button onClick={()=>setShowLangMenu(v=>!v)}
@@ -121,7 +115,13 @@ export default function CodeEditor() {
                 </div>
               )}
             </div>
-            <div style={{color:T.muted,fontSize:"11px"}}>Double-click tab to rename · Tab = 2 spaces</div>
+            
+            <div style={{marginLeft:"auto",display:"flex",gap:"8px",flexWrap:"wrap",alignItems:"center"}}>
+              <button onClick={runCode} style={{...btn(true),padding:"6px 14px",fontSize:"12px",background:`linear-gradient(135deg,${accent},#00e5ff)`,boxShadow:`0 4px 12px ${accent}40`,fontWeight:700}}><Terminal size={12}/> Run</button>
+              <button onClick={copyCode} style={{...btn(copied),padding:"6px 12px",fontSize:"12px"}}>{copied?<><Check size={12}/> Copied</>:<><Copy size={12}/> Copy</>}</button>
+              <button onClick={downloadFile} style={{...btn(),padding:"6px 12px",fontSize:"12px"}}><Download size={12}/> File</button>
+              <button onClick={downloadAll} style={{...btn(),padding:"6px 12px",fontSize:"12px"}}><Download size={12}/> All</button>
+            </div>
           </div>
 
           {/* Editor */}
