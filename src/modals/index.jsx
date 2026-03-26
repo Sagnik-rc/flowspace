@@ -5,6 +5,7 @@
 ───────────────────────────────────────────────────────────────────────── */
 import { X, Play, Pause, RotateCcw, SkipForward, Check, CheckSquare, Square, Crown } from "lucide-react";
 import { useApp } from "../context/AppContext";
+import DraggableWidget from "../components/DraggableWidget";
 
 /* ── AUTH MODAL ──────────────────────────────────────────────────────── */
 export function AuthModal() {
@@ -60,33 +61,29 @@ export function SpotifyModal() {
           spotUrl, setSpotUrl, spotEmbed, setSpotEmbed, connectSpotify, loadSpot, user } = useApp();
   if (!spotOpen) return null;
   return (
-    <div style={{position:"fixed",inset:0,zIndex:500,display:"flex",alignItems:"flex-start",justifyContent:"flex-end",padding:"70px 20px 0 0"}} onClick={e=>e.target===e.currentTarget&&setSpotOpen(false)}>
-      <div style={{width:"400px",background:dark?"rgba(10,6,26,0.98)":"rgba(252,250,255,0.98)",border:"1px solid #1ed76035",borderRadius:"22px",overflow:"hidden",boxShadow:"0 24px 80px #1ed76020",animation:"slideDown .3s cubic-bezier(.34,1.56,.64,1)"}}>
-        <div style={{padding:"17px 19px",background:"linear-gradient(135deg,#1ed76015,transparent)",borderBottom:"1px solid #1ed76022",display:"flex",alignItems:"center",gap:"11px"}}>
-          <div style={{width:"36px",height:"36px",borderRadius:"50%",background:"#1ed760",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px"}}>🎵</div>
-          <div style={{flex:1}}><div style={{fontFamily:"Syne",fontWeight:800,fontSize:"15px",color:T.text}}>Spotify</div><div style={{color:spotConnected?"#1ed760":T.muted,fontSize:"11px"}}>{spotConnected?`Connected as ${user?.name}`:"Not connected"}</div></div>
-          <button onClick={()=>setSpotOpen(false)} style={{background:"none",border:"none",cursor:"pointer",color:T.muted}}><X size={15}/></button>
-        </div>
-        <div style={{padding:"18px"}}>
-          {!spotConnected?(
-            <div style={{textAlign:"center"}}>
-              <div style={{fontSize:"50px",marginBottom:"11px"}}>🎵</div>
-              <div style={{fontFamily:"Syne",fontWeight:700,fontSize:"16px",color:T.text,marginBottom:"7px"}}>Connect Spotify</div>
-              <button onClick={connectSpotify} style={{...btn(true,"#1ed760"),justifyContent:"center",width:"100%",padding:"12px",fontSize:"14px",fontWeight:700,borderRadius:"13px"}}>🎵 Connect with Spotify</button>
+    <DraggableWidget id="spotify" title="Spotify Web Player" icon="🎵" color="#1ed760" onClose={() => setSpotOpen(false)} defaultPos={{ x: window.innerWidth - 380, y: window.innerHeight - 560 }} width="340px" height="440px">
+      <div style={{ padding: "20px", display: "flex", flexDirection: "column", height: "100%" }}>
+        {!spotConnected ? (
+          <div style={{ textAlign: "center", margin: "auto" }}>
+            <div style={{ fontSize: "56px", marginBottom: "16px", filter: "drop-shadow(0 8px 16px rgba(30,215,96,0.4))" }}>🎵</div>
+            <div style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "18px", color: T.text, marginBottom: "8px" }}>Connect Spotify</div>
+            <div style={{ color: T.muted, fontSize: "13px", marginBottom: "24px", lineHeight: 1.5 }}>Log in to access your playlists and control playback seamlessly.</div>
+            <button onClick={connectSpotify} style={{ ...btn(true, "#1ed760"), width: "100%", justifyContent: "center" }}>Link Account</button>
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+            <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+              <input value={spotUrl} onChange={e=>setSpotUrl(e.target.value)} onKeyDown={e=>e.key==="Enter"&&loadSpot()} placeholder="Paste Spotify link..." style={{...inp({flex:1, fontSize:"12px", padding:"10px 14px"})}}/>
+              <button onClick={loadSpot} style={{...btn(true,"#1ed760"), padding:"10px 16px"}}>Load</button>
             </div>
-          ):(
-            <div>
-              <div style={{display:"flex",gap:"7px",marginBottom:"11px"}}>
-                <input value={spotUrl} onChange={e=>setSpotUrl(e.target.value)} onKeyDown={e=>e.key==="Enter"&&loadSpot()} placeholder="Paste Spotify link..." style={{...inp({flex:1,fontSize:"13px",padding:"8px 11px"})}}/>
-                <button onClick={loadSpot} style={{...btn(true,"#1ed760"),padding:"8px 13px"}}>Load</button>
-              </div>
-              {spotEmbed?<iframe src={spotEmbed} width="100%" height="280" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style={{borderRadius:"13px",display:"block"}} title="Spotify"/>:<div style={{...glass({padding:"24px",textAlign:"center"})}}><div style={{color:T.muted,fontSize:"13px"}}>Paste a Spotify link 👆</div></div>}
-              <button onClick={()=>{setSpotConnected(false);setSpotEmbed("");setSpotUrl("");}} style={{...btn(),justifyContent:"center",width:"100%",marginTop:"9px",fontSize:"12px",color:T.muted}}>Disconnect</button>
+            <div style={{ flex: 1, minHeight: 0, borderRadius: "16px", overflow: "hidden", border: `1px solid ${T.border}`, background: "rgba(0,0,0,0.2)" }}>
+              {spotEmbed ? <iframe src={spotEmbed} width="100%" height="100%" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style={{display:"block"}} title="Spotify"/> : <div style={{height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontSize: "13px"}}>Paste link above 👆</div>}
             </div>
-          )}
-        </div>
+            <button onClick={()=>{setSpotConnected(false);setSpotEmbed("");setSpotUrl("");}} style={{...btn(), justifyContent:"center", width:"100%", marginTop:"12px", fontSize:"12px", color:T.muted, padding: "10px"}}>Disconnect Spotify</button>
+          </div>
+        )}
       </div>
-    </div>
+    </DraggableWidget>
   );
 }
 
@@ -96,34 +93,29 @@ export function CalendarModal() {
           calUrl, setCalUrl, calEmbed, setCalEmbed, connectCal, user } = useApp();
   if (!calOpen) return null;
   return (
-    <div style={{position:"fixed",inset:0,zIndex:500,display:"flex",alignItems:"flex-start",justifyContent:"flex-end",padding:"70px 20px 0 0"}} onClick={e=>e.target===e.currentTarget&&setCalOpen(false)}>
-      <div style={{width:"455px",background:dark?"rgba(10,6,26,0.98)":"rgba(252,250,255,0.98)",border:"1px solid #4285f435",borderRadius:"22px",overflow:"hidden",boxShadow:"0 24px 80px #4285f420",animation:"slideDown .3s cubic-bezier(.34,1.56,.64,1)"}}>
-        <div style={{padding:"17px 19px",background:"linear-gradient(135deg,#4285f415,transparent)",borderBottom:"1px solid #4285f422",display:"flex",alignItems:"center",gap:"11px"}}>
-          <div style={{width:"36px",height:"36px",borderRadius:"50%",background:"linear-gradient(135deg,#4285f4,#34a853)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px"}}>📅</div>
-          <div style={{flex:1}}><div style={{fontFamily:"Syne",fontWeight:800,fontSize:"15px",color:T.text}}>Google Calendar</div><div style={{color:calConnected?"#34a853":T.muted,fontSize:"11px"}}>{calConnected?`Synced as ${user?.name}`:"Not connected"}</div></div>
-          <button onClick={()=>setCalOpen(false)} style={{background:"none",border:"none",cursor:"pointer",color:T.muted}}><X size={15}/></button>
-        </div>
-        <div style={{padding:"18px"}}>
-          {!calConnected?(
-            <div style={{textAlign:"center"}}>
-              <div style={{fontSize:"50px",marginBottom:"11px"}}>📅</div>
-              <div style={{fontFamily:"Syne",fontWeight:700,fontSize:"16px",color:T.text,marginBottom:"7px"}}>Connect Google Calendar</div>
-              <button onClick={connectCal} style={{...btn(true,"#4285f4"),justifyContent:"center",width:"100%",padding:"12px",fontSize:"14px",fontWeight:700,borderRadius:"13px"}}>🔗 Connect with Google</button>
+    <DraggableWidget id="calendar" title="Google Calendar" icon="📅" color="#4285f4" onClose={() => setCalOpen(false)} defaultPos={{ x: 40, y: window.innerHeight - 560 }} width="380px" height="460px">
+      <div style={{ padding: "20px", display: "flex", flexDirection: "column", height: "100%" }}>
+        {!calConnected ? (
+          <div style={{ textAlign: "center", margin: "auto" }}>
+            <div style={{ fontSize: "56px", marginBottom: "16px", filter: "drop-shadow(0 8px 16px rgba(66,133,244,0.4))" }}>📅</div>
+            <div style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "18px", color: T.text, marginBottom: "8px" }}>Link Calendar</div>
+            <div style={{ color: T.muted, fontSize: "13px", marginBottom: "24px", lineHeight: 1.5 }}>Sync Google Calendar to view and edit your upcoming events directly.</div>
+            <button onClick={connectCal} style={{ ...btn(true, "#4285f4"), width: "100%", justifyContent: "center" }}>Sign In with Google</button>
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+            <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+              <input value={calUrl} onChange={e=>setCalUrl(e.target.value)} onKeyDown={e=>e.key==="Enter"&&setCalEmbed(calUrl.trim())} placeholder="Paste embed URL..." style={{...inp({flex:1, fontSize:"12px", padding:"10px 14px"})}}/>
+              <button onClick={()=>setCalEmbed(calUrl.trim())} style={{...btn(true,"#4285f4"), padding:"10px 16px"}}>Load</button>
             </div>
-          ):(
-            <div>
-              <div style={{color:T.muted,fontSize:"11px",padding:"9px 11px",borderRadius:"9px",background:T.inp,border:`1px solid ${T.border}`,lineHeight:1.7,marginBottom:"11px"}}>📋 Calendar → Settings → Integrate → Copy "Public URL"</div>
-              <div style={{display:"flex",gap:"7px",marginBottom:"11px"}}>
-                <input value={calUrl} onChange={e=>setCalUrl(e.target.value)} onKeyDown={e=>e.key==="Enter"&&setCalEmbed(calUrl.trim())} placeholder="Paste embed URL..." style={{...inp({flex:1,fontSize:"13px",padding:"8px 11px"})}}/>
-                <button onClick={()=>setCalEmbed(calUrl.trim())} style={{...btn(true,"#4285f4"),padding:"8px 13px"}}>Load</button>
-              </div>
-              {calEmbed?<iframe src={calEmbed} style={{width:"100%",height:"320px",borderRadius:"13px",border:`1px solid ${T.border}`,display:"block"}} title="Google Calendar"/>:<div style={{...glass({padding:"24px",textAlign:"center"})}}><div style={{color:T.muted,fontSize:"13px"}}>Paste embed URL above 👆</div></div>}
-              <button onClick={()=>{setCalConnected(false);setCalEmbed("");setCalUrl("");}} style={{...btn(),justifyContent:"center",width:"100%",marginTop:"9px",fontSize:"12px",color:T.muted}}>Disconnect</button>
+            <div style={{ flex: 1, minHeight: 0, borderRadius: "16px", overflow: "hidden", border: `1px solid ${T.border}`, background: "rgba(255,255,255,0.02)" }}>
+              {calEmbed ? <iframe src={calEmbed} width="100%" height="100%" frameBorder="0" style={{display:"block"}} title="Google Calendar"/> : <div style={{height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontSize: "13px"}}>Paste embed URL above 👆</div>}
             </div>
-          )}
-        </div>
+            <button onClick={()=>{setCalConnected(false);setCalEmbed("");setCalUrl("");}} style={{...btn(), justifyContent:"center", width:"100%", marginTop:"12px", fontSize:"12px", color:T.muted, padding: "10px"}}>Disconnect Calendar</button>
+          </div>
+        )}
       </div>
-    </div>
+    </DraggableWidget>
   );
 }
 

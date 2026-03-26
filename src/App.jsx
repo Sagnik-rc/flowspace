@@ -7,7 +7,8 @@ import { GFONTS } from "./constants";
 
 // Layout
 import Sidebar       from "./components/Sidebar";
-import { TopBar, Footer } from "./components/TopBar";
+import { TopBar }    from "./components/TopBar";
+import { StaticDock } from "./components/StaticDock";
 import FloatingAI    from "./components/FloatingAI";
 
 // Sections
@@ -74,7 +75,7 @@ export default function App() {
             {sec === "settings" ? <Settings/> : <ActiveSection/>}
           </main>
 
-          <Footer/>
+          <StaticDock/>
 
           {/* ── Floating AI ───────────────────────────────────────────── */}
           <FloatingAI/>
