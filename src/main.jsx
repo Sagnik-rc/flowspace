@@ -1,10 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+/* ─────────────────────────────────────────────────────────────────────────
+   main.jsx  —  Entry point. Wraps App in AppProvider so every component
+                can call useApp() to access all state.
+───────────────────────────────────────────────────────────────────────── */
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { AppProvider } from "./context/AppContext";
+import App from "./App";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <AppProvider>
+      <App />
+    </AppProvider>
+  </React.StrictMode>
+);

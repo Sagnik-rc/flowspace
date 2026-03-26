@@ -1,121 +1,85 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+/* ─────────────────────────────────────────────────────────────────────────
+   App.jsx  —  The main shell. Just wires everything together.
+   All state lives in AppContext. All sections/modals are self-contained.
+───────────────────────────────────────────────────────────────────────── */
+import { useApp } from "./context/AppContext";
+import { GFONTS } from "./constants";
 
-function App() {
-  const [count, setCount] = useState(0)
+// Layout
+import Sidebar       from "./components/Sidebar";
+import { TopBar, Footer } from "./components/TopBar";
+import FloatingAI    from "./components/FloatingAI";
+
+// Sections
+import Dashboard     from "./sections/Dashboard";
+import Notes         from "./sections/Notes";
+import Focus         from "./sections/Focus";
+import CodeEditor    from "./sections/CodeEditor";
+import Files         from "./sections/Files";
+import Vault         from "./sections/Vault";
+import Settings      from "./sections/Settings";
+
+// Modals
+import { AuthModal, SpotifyModal, CalendarModal,
+         PomPopup, SubscriptionModal, SessionCompleteModal } from "./modals";
+
+const SECTION_MAP = { dashboard: Dashboard, notes: Notes, focus: Focus,
+                      code: CodeEditor, files: Files, vault: Vault };
+
+export default function App() {
+  const { T, accent, dark, bodyFont, fontSize, bgImage, sec, onSideEnter } = useApp();
+  const ActiveSection = SECTION_MAP[sec] || Dashboard;
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh", fontFamily: bodyFont, fontSize: `${fontSize}px`, color: T.text, overflow: "hidden", position: "relative", background: bgImage ? `url(${bgImage}) center/cover no-repeat fixed` : T.bg }}>
 
-      <div className="ticks"></div>
+      {/* ── Global styles & fonts ─────────────────────────────────── */}
+      <style>{GFONTS + `
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: ${accent}70; border-radius: 4px; }
+        @keyframes pulse     { 0%,100%{opacity:.2;transform:scale(.7)} 50%{opacity:1;transform:scale(1.1)} }
+        @keyframes floatSlideIn { from{opacity:0;transform:translateY(14px) scale(.93)} to{opacity:1;transform:none} }
+        @keyframes floatPopUp   { from{opacity:0;transform:translateY(22px) scale(.88)} to{opacity:1;transform:none} }
+        @keyframes botPulse  { 0%,100%{box-shadow:0 0 24px ${accent}60,0 4px 16px rgba(0,0,0,.3)} 50%{box-shadow:0 0 42px ${accent}90,0 4px 26px rgba(0,0,0,.4)} }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-16px) scale(.95)} to{opacity:1;transform:none} }
+        @keyframes authPop   { from{opacity:0;transform:scale(.88) translateY(18px)} to{opacity:1;transform:none} }
+        @keyframes spin      { to{transform:rotate(360deg)} }
+        @keyframes donePulse { 0%{transform:scale(.7);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
+        input::placeholder, textarea::placeholder { color: ${T.muted}; }
+        button:not(:disabled):hover { opacity: .85; transform: translateY(-1px); }
+        button { transition: all .15s !important; }
+      `}</style>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {/* ── Background layers ─────────────────────────────────────── */}
+      {bgImage && <div style={{ position: "fixed", inset: 0, background: dark ? "rgba(5,5,14,0.72)" : "rgba(244,241,255,0.66)", backdropFilter: "blur(2px)", zIndex: 0, pointerEvents: "none" }}/>}
+      <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, background: `radial-gradient(ellipse at 12% 20%,${accent}12 0%,transparent 52%),radial-gradient(ellipse at 88% 78%,#00e5ff08 0%,transparent 52%)` }}/>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* ── Sidebar hover trigger ──────────────────────────────────── */}
+      <div onMouseEnter={onSideEnter} style={{ position: "fixed", left: 0, top: 0, width: "10px", height: "100vh", zIndex: 30 }}/>
+
+      {/* ── Layout components ─────────────────────────────────────── */}
+      <Sidebar/>
+      <TopBar/>
+
+      {/* ── Main content area ─────────────────────────────────────── */}
+      <main style={{ flex: 1, overflowY: "auto", padding: "32px 34px 0", position: "relative", zIndex: 1, minWidth: 0 }}>
+        {sec === "settings" ? <Settings/> : <ActiveSection/>}
+      </main>
+
+      <Footer/>
+
+      {/* ── All modals ────────────────────────────────────────────── */}
+      <PomPopup/>
+      <SpotifyModal/>
+      <CalendarModal/>
+      <AuthModal/>
+      <SubscriptionModal/>
+      <SessionCompleteModal/>
+
+      {/* ── Floating AI ───────────────────────────────────────────── */}
+      <FloatingAI/>
+    </div>
+  );
 }
-
-export default App
