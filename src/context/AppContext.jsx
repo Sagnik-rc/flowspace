@@ -4,7 +4,7 @@
    Every section/modal imports  useApp()  from here — zero prop drilling.
 ───────────────────────────────────────────────────────────────────────── */
 import { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
-import { POM_FORMATS, LANGS, FREE_LIMITS, RAZORPAY_KEY, AUTO_LOCK_OPTIONS, getStarter } from "../constants";
+import { POM_FORMATS, LANGS, FREE_LIMITS, RAZORPAY_KEY, GEMINI_API_KEY, AUTO_LOCK_OPTIONS, getStarter } from "../constants";
 
 const AppContext = createContext(null);
 
@@ -22,12 +22,7 @@ export function AppProvider({ children }) {
   const [pendingCb, setPendingCb] = useState(null);
   const [authDone, setAuthDone]   = useState(false);
 
-  useEffect(() => {
-    if (!user && !authDone) {
-      const t = setTimeout(() => setShowAuth(true), 3500);
-      return () => clearTimeout(t);
-    }
-  }, [user, authDone]);
+  // Auto-login popup removed to let users manually decide when to sign in.
 
   const requireAuth = cb => { if (user) cb(); else { setPendingCb(() => cb); setShowAuth(true); } };
   const doLogin = u => {
@@ -107,10 +102,10 @@ export function AppProvider({ children }) {
   };
 
   /* ── STYLE HELPERS (depend on theme — live here, not in utils) ─────── */
-  const glass     = (ex = {}) => ({ background: T.card, border: `1px solid ${T.border}`, borderRadius: "16px", padding: "24px", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", ...ex });
-  const glowGlass = (color = accent, ex = {}) => glass({ border: `1px solid ${color}28`, background: dark ? `${color}08` : `${color}06`, ...ex });
-  const inp       = (ex = {}) => ({ background: T.inp, border: `1px solid ${T.border}`, borderRadius: "10px", padding: "10px 14px", color: T.text, fontSize: `${fontSize}px`, fontFamily: bodyFont, outline: "none", width: "100%", boxSizing: "border-box", ...ex });
-  const btn       = (primary = false, color = accent) => ({ background: primary ? color : T.card, color: primary ? "#fff" : T.text, border: `1px solid ${primary ? color : T.border}`, borderRadius: "10px", padding: "9px 18px", cursor: "pointer", fontSize: "14px", fontFamily: bodyFont, fontWeight: primary ? 600 : 400, transition: "all 0.18s", display: "flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap", boxSizing: "border-box" });
+  const glass     = (ex = {}) => ({ background: T.card, border: `1px solid ${T.border}`, borderRadius: "28px", padding: "28px", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", boxShadow: `0 16px 40px rgba(0,0,0,0.06)`, transition: "transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease", ...ex });
+  const glowGlass = (color = accent, ex = {}) => ({ ...glass(), border: `1px solid ${color}35`, background: dark ? `${color}12` : `${color}08`, boxShadow: `0 20px 50px ${color}25`, ...ex });
+  const inp       = (ex = {}) => ({ background: T.inp, border: `1px solid ${T.border}`, borderRadius: "16px", padding: "14px 20px", color: T.text, fontSize: `${fontSize}px`, fontFamily: bodyFont, outline: "none", width: "100%", boxSizing: "border-box", transition: "all 0.2s ease", ...ex });
+  const btn       = (primary = false, color = accent, ex = {}) => ({ background: primary ? `linear-gradient(135deg, ${color}, #00e5ff)` : T.card, color: primary ? "#fff" : T.text, border: primary ? "none" : `1px solid ${T.border}`, borderRadius: "100px", padding: "14px 28px", cursor: "pointer", fontSize: "15px", fontFamily: bodyFont, fontWeight: primary ? 700 : 500, transition: "all 0.25s ease", display: "flex", alignItems: "center", gap: "10px", whiteSpace: "nowrap", boxSizing: "border-box", boxShadow: primary ? `0 12px 32px ${color}45` : "none", ...ex });
 
   /* ── NAVIGATION ────────────────────────────────────────────────────── */
   const [sec, setSec]           = useState("dashboard");
@@ -124,7 +119,15 @@ export function AppProvider({ children }) {
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(id); }, []);
   const fmtDate   = d => d.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
   const fmtSecs   = s => `${Math.floor(s / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
-  const greeting  = now.getHours() < 12 ? ["🌅", "Morning"] : now.getHours() < 18 ? ["🌤️", "Afternoon"] : ["🌙", "Evening"];
+  
+  const getDynamicGreeting = () => {
+    const hr = now.getHours();
+    if (hr >= 6 && hr < 12) return ["🌅", "Morning"];
+    if (hr >= 12 && hr < 17) return ["🌤️", "Afternoon"];
+    if (hr >= 17 && hr < 22) return ["🌙", "Evening"];
+    return ["🌃", "Night"];
+  };
+  const greeting = getDynamicGreeting();
 
   /* ── ACTIVITY LOG ──────────────────────────────────────────────────── */
   const [activityLog, setActivityLog] = useState([]);
@@ -424,12 +427,21 @@ export function AppProvider({ children }) {
     const um = { role: "user", content: floatIn.trim() }, hist = [...floatMsgs, um];
     setFloatMsgs(hist); setFloatIn(""); setFloatBusy(true);
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1024, system: "You are FlowAI, a GenZ AI assistant in FlowSpace productivity app. Be warm, concise, helpful. Use emojis naturally.", messages: hist.map(m => ({ role: m.role, content: m.content })) })
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [{ text: "You are FlowAI, a GenZ AI assistant in FlowSpace productivity app. Be warm, concise, helpful. Use emojis naturally." }]
+          },
+          contents: hist.map(m => ({
+            role: m.role === "assistant" ? "model" : "user",
+            parts: [{ text: m.content }]
+          }))
+        })
       });
       const d = await res.json();
-      setFloatMsgs([...hist, { role: "assistant", content: d.content?.[0]?.text ?? "Oops, try again 🔄" }]);
+      const text = d.candidates?.[0]?.content?.parts?.[0]?.text ?? "Oops, try again 🔄";
+      setFloatMsgs([...hist, { role: "assistant", content: text }]);
     } catch { setFloatMsgs([...hist, { role: "assistant", content: "Network issue 🌐 Check connection." }]); }
     finally { setFloatBusy(false); }
   };

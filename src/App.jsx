@@ -18,6 +18,7 @@ import CodeEditor    from "./sections/CodeEditor";
 import Files         from "./sections/Files";
 import Vault         from "./sections/Vault";
 import Settings      from "./sections/Settings";
+import Landing       from "./sections/Landing";
 
 // Modals
 import { AuthModal, SpotifyModal, CalendarModal,
@@ -27,8 +28,9 @@ const SECTION_MAP = { dashboard: Dashboard, notes: Notes, focus: Focus,
                       code: CodeEditor, files: Files, vault: Vault };
 
 export default function App() {
-  const { T, accent, dark, bodyFont, fontSize, bgImage, sec, onSideEnter } = useApp();
+  const { T, accent, dark, bodyFont, fontSize, bgImage, sec, onSideEnter, user } = useApp();
   const ActiveSection = SECTION_MAP[sec] || Dashboard;
+  const isLanding = !user;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh", fontFamily: bodyFont, fontSize: `${fontSize}px`, color: T.text, overflow: "hidden", position: "relative", background: bgImage ? `url(${bgImage}) center/cover no-repeat fixed` : T.bg }}>
@@ -56,19 +58,28 @@ export default function App() {
       {bgImage && <div style={{ position: "fixed", inset: 0, background: dark ? "rgba(5,5,14,0.72)" : "rgba(244,241,255,0.66)", backdropFilter: "blur(2px)", zIndex: 0, pointerEvents: "none" }}/>}
       <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, background: `radial-gradient(ellipse at 12% 20%,${accent}12 0%,transparent 52%),radial-gradient(ellipse at 88% 78%,#00e5ff08 0%,transparent 52%)` }}/>
 
-      {/* ── Sidebar hover trigger ──────────────────────────────────── */}
-      <div onMouseEnter={onSideEnter} style={{ position: "fixed", left: 0, top: 0, width: "10px", height: "100vh", zIndex: 30 }}/>
+      {isLanding ? (
+        <Landing />
+      ) : (
+        <>
+          {/* ── Sidebar hover trigger ──────────────────────────────────── */}
+          <div onMouseEnter={onSideEnter} style={{ position: "fixed", left: 0, top: 0, width: "10px", height: "100vh", zIndex: 30 }}/>
 
-      {/* ── Layout components ─────────────────────────────────────── */}
-      <Sidebar/>
-      <TopBar/>
+          {/* ── Layout components ─────────────────────────────────────── */}
+          <Sidebar/>
+          <TopBar/>
 
-      {/* ── Main content area ─────────────────────────────────────── */}
-      <main style={{ flex: 1, overflowY: "auto", padding: "32px 34px 0", position: "relative", zIndex: 1, minWidth: 0 }}>
-        {sec === "settings" ? <Settings/> : <ActiveSection/>}
-      </main>
+          {/* ── Main content area ─────────────────────────────────────── */}
+          <main style={{ flex: 1, overflowY: "auto", padding: "32px 34px 0", position: "relative", zIndex: 1, minWidth: 0 }}>
+            {sec === "settings" ? <Settings/> : <ActiveSection/>}
+          </main>
 
-      <Footer/>
+          <Footer/>
+
+          {/* ── Floating AI ───────────────────────────────────────────── */}
+          <FloatingAI/>
+        </>
+      )}
 
       {/* ── All modals ────────────────────────────────────────────── */}
       <PomPopup/>
@@ -77,9 +88,6 @@ export default function App() {
       <AuthModal/>
       <SubscriptionModal/>
       <SessionCompleteModal/>
-
-      {/* ── Floating AI ───────────────────────────────────────────── */}
-      <FloatingAI/>
     </div>
   );
 }

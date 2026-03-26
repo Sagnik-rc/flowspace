@@ -48,6 +48,7 @@ export const getStarter = l => STARTERS[l] || STARTERS.default;
 // ── Subscription & limits ───────────────────────────────────────────────
 export const FREE_LIMITS   = { notes:10, tabs:10, files:10, vaultNotes:3 };
 export const RAZORPAY_KEY  = "rzp_test_YOUR_KEY_HERE"; // 🔑 Replace with real key
+export const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"; // 🔑 Replace with your actual Gemini API key
 
 // ── Vault auto-lock options ─────────────────────────────────────────────
 export const AUTO_LOCK_OPTIONS = [

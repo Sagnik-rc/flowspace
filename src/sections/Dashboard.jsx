@@ -10,22 +10,22 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div style={{marginBottom:"18px"}}>
-        <h1 style={{fontFamily:"Syne",fontWeight:800,fontSize:"34px",color:T.text,margin:0}}>{greeting[0]} Good {greeting[1]}{user?`, ${user.name.split(" ")[0]}`:""}!</h1>
-        <p style={{color:T.muted,marginTop:"6px",fontSize:"14px"}}>{fmtDate(now)}</p>
+      <div style={{marginBottom:"28px"}}>
+        <h1 style={{fontFamily:"Syne",fontWeight:800,fontSize:"52px",color:T.text,margin:0,letterSpacing:"-1px"}}>{greeting[0]} Good {greeting[1]}{user?<span style={{background:`linear-gradient(135deg, ${accent}, #00e5ff)`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>, {user.name.split(" ")[0]}</span>:""}!</h1>
+        <p style={{color:T.muted,marginTop:"10px",fontSize:"16px"}}>{fmtDate(now)}</p>
       </div>
-      <div style={{...glowGlass(accent,{marginBottom:"16px",textAlign:"center",padding:"26px 24px"})}}>
-        <div style={{fontSize:"68px",fontFamily:"JetBrains Mono",color:T.text,lineHeight:1,letterSpacing:"-4px",filter:`drop-shadow(0 0 26px ${accent}40)`}}>{now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})}</div>
-        <div style={{color:T.muted,marginTop:"8px",fontSize:"11px",letterSpacing:"1px",textTransform:"uppercase"}}>{Intl.DateTimeFormat().resolvedOptions().timeZone}</div>
+      <div style={{...glowGlass(accent,{marginBottom:"24px",textAlign:"center",padding:"40px 32px"}), transform: "scale(1)", transition: "transform 0.3s ease"}} onMouseEnter={e=>e.currentTarget.style.transform="scale(1.02)"} onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"}>
+        <div style={{fontSize:"96px",fontFamily:"JetBrains Mono",color:T.text,lineHeight:1,letterSpacing:"-6px",filter:`drop-shadow(0 0 36px ${accent}60)`}}>{now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})}</div>
+        <div style={{color:T.muted,marginTop:"14px",fontSize:"14px",letterSpacing:"2px",textTransform:"uppercase",fontWeight:"600"}}>{Intl.DateTimeFormat().resolvedOptions().timeZone}</div>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:"11px",marginBottom:"16px"}}>
-        {[["📝","Notes",notes.length,accent,"notes"],["🍅","Sessions done",pomHistory.length,"#ff6b6b","focus"],["📂","Files",files.length,"#00e5ff","files"],["🔒","Secrets",vNotes.length,"#00ff94","vault"]].map(([e,l,v,clr,dest],i)=>(
-          <div key={i} onClick={()=>setSec(dest)} style={{...glass({border:`1px solid ${clr}28`,padding:"16px",cursor:"pointer",transition:"all .18s"})}}
-            onMouseEnter={ev=>{ev.currentTarget.style.transform="translateY(-3px)";ev.currentTarget.style.boxShadow=`0 12px 30px ${clr}20`;}}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:"20px",marginBottom:"24px"}}>
+        {[["📝","Notes",notes.length,accent,"notes"],["🍅","Sessions",pomHistory.length,"#ff6b6b","focus"],["📂","Files",files.length,"#00e5ff","files"],["🔒","Secrets",vNotes.length,"#00ff94","vault"]].map(([e,l,v,clr,dest],i)=>(
+          <div key={i} onClick={()=>setSec(dest)} style={{...glass({padding:"24px",cursor:"pointer",border:`1px solid ${clr}30`,background:`linear-gradient(135deg, ${T.card}, ${clr}05)`})}}
+            onMouseEnter={ev=>{ev.currentTarget.style.transform="translateY(-6px)";ev.currentTarget.style.boxShadow=`0 20px 40px ${clr}25`;}}
             onMouseLeave={ev=>{ev.currentTarget.style.transform="";ev.currentTarget.style.boxShadow="";}}>
-            <div style={{fontSize:"22px",marginBottom:"5px"}}>{e}</div>
-            <div style={{fontSize:"32px",fontWeight:800,fontFamily:"Syne",color:clr,lineHeight:1}}>{v}</div>
-            <div style={{color:T.muted,fontSize:"11px",marginTop:"3px"}}>{l}</div>
+            <div style={{fontSize:"32px",marginBottom:"12px"}}>{e}</div>
+            <div style={{fontSize:"48px",fontWeight:800,fontFamily:"Syne",color:clr,lineHeight:1,letterSpacing:"-1px"}}>{v}</div>
+            <div style={{color:T.text,fontSize:"14px",marginTop:"6px",fontWeight:600}}>{l}</div>
           </div>
         ))}
       </div>

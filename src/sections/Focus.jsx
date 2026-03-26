@@ -13,9 +13,9 @@ export default function Focus() {
   const fmt = POM_FORMATS.find(f => f.id === pomFmtId);
 
   return (
-    <div style={{maxWidth:"860px",margin:"0 auto"}}>
-      <h2 style={{fontFamily:"Syne",fontWeight:800,fontSize:"26px",color:T.text,margin:"0 0 4px"}}>Focus Mode 🍅</h2>
-      <p style={{color:T.muted,fontSize:"13px",marginBottom:"22px"}}>Pick a format, set your sessions, then start. A popup timer will appear.</p>
+    <div style={{maxWidth:"960px",margin:"0 auto",paddingBottom:"40px"}}>
+      <h2 style={{fontFamily:"Syne",fontWeight:800,fontSize:"42px",color:T.text,margin:"0 0 8px",letterSpacing:"-1px"}}>Focus Mode 🍅</h2>
+      <p style={{color:T.muted,fontSize:"16px",marginBottom:"32px"}}>Pick a format, set your sessions, then enter the zone.</p>
 
       {/* Format grid */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:"11px",marginBottom:"22px"}}>
@@ -24,10 +24,10 @@ export default function Focus() {
             style={{...glass({padding:"15px",cursor:"pointer",border:`1px solid ${pomFmtId===f.id?accent:T.border}`,background:pomFmtId===f.id?`${accent}15`:T.card,transition:"all .18s"})}}
             onMouseEnter={ev=>ev.currentTarget.style.borderColor=accent}
             onMouseLeave={ev=>ev.currentTarget.style.borderColor=pomFmtId===f.id?accent:T.border}>
-            <div style={{display:"flex",alignItems:"center",gap:"9px",marginBottom:"7px"}}>
-              <span style={{fontSize:"20px"}}>{f.emoji}</span>
-              <div style={{fontFamily:"Syne",fontWeight:700,fontSize:"13px",color:T.text,flex:1}}>{f.name}</div>
-              {pomFmtId===f.id&&<div style={{width:"7px",height:"7px",borderRadius:"50%",background:accent,boxShadow:`0 0 7px ${accent}`}}/>}
+            <div style={{display:"flex",alignItems:"center",gap:"12px",marginBottom:"12px"}}>
+              <span style={{fontSize:"28px"}}>{f.emoji}</span>
+              <div style={{fontFamily:"Syne",fontWeight:800,fontSize:"16px",color:T.text,flex:1}}>{f.name}</div>
+              {pomFmtId===f.id&&<div style={{width:"10px",height:"10px",borderRadius:"50%",background:accent,boxShadow:`0 0 10px ${accent}`}}/>}
             </div>
             {f.id!=="flowtime"&&f.id!=="custom"&&(
               <div style={{display:"flex",gap:"5px",marginBottom:"6px",flexWrap:"wrap"}}>
@@ -69,15 +69,15 @@ export default function Focus() {
             {fmt&&fmt.work&&<div style={{color:T.muted,fontSize:"12px",padding:"9px 11px",borderRadius:"9px",background:T.inp,border:`1px solid ${T.border}`}}>Total: <span style={{color:accent,fontWeight:600}}>{desired*(fmt.work||cWork)} min focus</span></div>}
           </div>
           {/* Mini timer */}
-          <div style={{...glowGlass(phaseColor[pomPhase],{padding:"18px",textAlign:"center"})}}>
-            <div style={{color:T.muted,fontSize:"10px",fontWeight:700,textTransform:"uppercase",letterSpacing:"1.5px",marginBottom:"9px"}}>{pomPhase==="work"?"🧠 Work":"☕ Break"}</div>
-            <div style={{fontSize:"50px",fontFamily:"JetBrains Mono",color:phaseColor[pomPhase],letterSpacing:"-2px",lineHeight:1,filter:`drop-shadow(0 0 16px ${phaseColor[pomPhase]}50)`}}>
+          <div style={{...glowGlass(phaseColor[pomPhase],{padding:"40px",textAlign:"center"})}}>
+            <div style={{color:T.muted,fontSize:"12px",fontWeight:800,textTransform:"uppercase",letterSpacing:"2px",marginBottom:"16px"}}>{pomPhase==="work"?"🧠 Deep Work":"☕ Recovery Break"}</div>
+            <div style={{fontSize:"86px",fontFamily:"JetBrains Mono",color:phaseColor[pomPhase],letterSpacing:"-4px",lineHeight:1,filter:`drop-shadow(0 0 30px ${phaseColor[pomPhase]}60)`,fontWeight:700}}>
               {pomFmtId==="flowtime"?fmtSecs(flowtimeEl):fmtSecs(pomTime||0)}
             </div>
-            <div style={{display:"flex",gap:"7px",justifyContent:"center",marginTop:"14px"}}>
-              <button onClick={resetPom} style={{...btn(),padding:"7px 12px",fontSize:"12px"}}><RotateCcw size={12}/></button>
-              <button onClick={startPom} style={{...btn(true,phaseColor[pomPhase]),padding:"7px 18px",fontSize:"13px"}}><Play size={13}/> Start & Open</button>
-              <button onClick={skipPhase} style={{...btn(),padding:"7px 12px",fontSize:"12px"}}><SkipForward size={12}/></button>
+            <div style={{display:"flex",gap:"12px",justifyContent:"center",marginTop:"24px"}}>
+              <button onClick={resetPom} style={{...btn(),padding:"10px 16px",fontSize:"14px"}}><RotateCcw size={16}/></button>
+              <button onClick={startPom} style={{...btn(true,phaseColor[pomPhase]),padding:"12px 24px",fontSize:"16px",boxShadow:`0 12px 30px ${phaseColor[pomPhase]}50`}}><Play size={16}/> Start Flow</button>
+              <button onClick={skipPhase} style={{...btn(),padding:"10px 16px",fontSize:"14px"}}><SkipForward size={16}/></button>
             </div>
           </div>
           {/* Progress dots */}

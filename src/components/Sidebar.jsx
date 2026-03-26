@@ -28,9 +28,9 @@ export default function Sidebar() {
       style={{ position: "fixed", left: 0, top: 0, height: "100vh", zIndex: 25, width: sideOpen ? "205px" : "0px", overflow: "hidden", background: T.sidebar, borderRight: sideOpen ? `1px solid ${T.border}` : "none", backdropFilter: "blur(28px)", WebkitBackdropFilter: "blur(28px)", display: "flex", flexDirection: "column", padding: sideOpen ? "17px 9px" : "0", gap: "3px", transition: "width .28s cubic-bezier(.4,0,.2,1),padding .28s", boxShadow: sideOpen ? "5px 0 40px rgba(0,0,0,.4)" : "none" }}
     >
       {/* Logo */}
-      <div style={{ display: "flex", alignItems: "center", gap: "9px", padding: "7px 6px 18px", overflow: "hidden", flexShrink: 0 }}>
-        <div style={{ width: "32px", height: "32px", borderRadius: "9px", flexShrink: 0, background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", boxShadow: `0 0 14px ${accent}50` }}>🌊</div>
-        <span style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "16px", color: T.text, whiteSpace: "nowrap" }}>FlowSpace</span>
+      <div onClick={() => setSec("dashboard")} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 6px 24px", overflow: "hidden", flexShrink: 0, cursor: "pointer" }}>
+        <div style={{ width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", boxShadow: `0 0 20px ${accent}60` }}>🌊</div>
+        <span style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "20px", color: T.text, whiteSpace: "nowrap" }}>FlowSpace</span>
       </div>
 
       {/* User card */}
@@ -56,10 +56,12 @@ export default function Sidebar() {
         const Icon = ICONS[id] || LayoutDashboard;
         return (
           <button key={id} onClick={() => setSec(id)}
-            style={{ display: "flex", alignItems: "center", gap: "9px", padding: "9px", borderRadius: "10px", border: "none", cursor: "pointer", color: sec === id ? accent : T.muted, background: sec === id ? `${accent}18` : "transparent", fontFamily: bodyFont, fontSize: "13px", fontWeight: sec === id ? 600 : 400, transition: "all .15s", whiteSpace: "nowrap", width: "100%", textAlign: "left" }}>
-            <Icon size={15} style={{ flexShrink: 0, strokeWidth: sec === id ? 2.5 : 1.8 }}/>
+            style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px", borderRadius: "16px", border: "none", cursor: "pointer", color: sec === id ? accent : T.muted, background: sec === id ? `${accent}15` : "transparent", fontFamily: bodyFont, fontSize: "14px", fontWeight: sec === id ? 700 : 500, transition: "all .15s", whiteSpace: "nowrap", width: "100%", textAlign: "left" }}
+            onMouseEnter={e => { if(sec!==id) e.currentTarget.style.background = T.inp }}
+            onMouseLeave={e => { if(sec!==id) e.currentTarget.style.background = "transparent" }}>
+            <Icon size={18} style={{ flexShrink: 0, strokeWidth: sec === id ? 2.5 : 2 }}/>
             <span>{label}</span>
-            {id === "vault" && !vLocked && <span style={{ fontSize: "8px", color: "#00ff94", marginLeft: "auto" }}>🔓</span>}
+            {id === "vault" && !vLocked && <span style={{ fontSize: "10px", color: "#00ff94", marginLeft: "auto" }}>🔓</span>}
           </button>
         );
       })}

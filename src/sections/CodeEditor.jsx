@@ -21,11 +21,11 @@ export default function CodeEditor() {
 
   return (
     <div style={{height:"calc(100vh - 70px)",display:"flex",flexDirection:"column",gap:0}}>
-      <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"9px",flexShrink:0,flexWrap:"wrap"}}>
-        <h2 style={{fontFamily:"Syne",fontWeight:800,fontSize:"26px",color:T.text,margin:"0 0 4px"}}>Code Editor 💻</h2>
-        <div style={{marginLeft:"auto",display:"flex",gap:"6px",flexWrap:"wrap"}}>
-          <button onClick={runCode} style={{...btn(true),padding:"7px 15px",fontSize:"13px",background:`linear-gradient(135deg,${accent},#00e5ff)`}}><Terminal size={13}/> Run</button>
-          <button onClick={copyCode} style={{...btn(copied),padding:"7px 13px",fontSize:"13px"}}>{copied?<><Check size={12}/> Copied!</>:<><Copy size={12}/> Copy</>}</button>
+      <div style={{display:"flex",alignItems:"center",gap:"8px",marginBottom:"16px",flexShrink:0,flexWrap:"wrap"}}>
+        <h2 style={{fontFamily:"Syne",fontWeight:800,fontSize:"42px",color:T.text,margin:"0 0 4px",letterSpacing:"-1px"}}>Code Editor 💻</h2>
+        <div style={{marginLeft:"auto",display:"flex",gap:"12px",flexWrap:"wrap"}}>
+          <button onClick={runCode} style={{...btn(true),padding:"10px 20px",fontSize:"14px",background:`linear-gradient(135deg,${accent},#00e5ff)`,boxShadow:`0 8px 24px ${accent}40`}}><Terminal size={14}/> Run Code</button>
+          <button onClick={copyCode} style={{...btn(copied),padding:"10px 18px",fontSize:"14px"}}>{copied?<><Check size={14}/> Copied!</>:<><Copy size={14}/> Copy</>}</button>
           <button onClick={downloadFile} style={{...btn(),padding:"7px 13px",fontSize:"13px"}}><Download size={12}/> File</button>
           <button onClick={downloadAll} style={{...btn(),padding:"7px 13px",fontSize:"13px"}}><Download size={12}/> All</button>
         </div>

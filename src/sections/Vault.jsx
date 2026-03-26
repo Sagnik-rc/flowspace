@@ -14,8 +14,8 @@ export default function Vault() {
 
   return (
     <div style={{maxWidth:"760px",margin:"0 auto"}} onClick={vaultActivity}>
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"6px"}}>
-        <h2 style={{fontFamily:"Syne",fontWeight:800,fontSize:"26px",color:T.text,margin:"0 0 4px"}}>Private Vault 🔐</h2>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px"}}>
+        <h2 style={{fontFamily:"Syne",fontWeight:800,fontSize:"42px",color:T.text,margin:"0 0 4px",letterSpacing:"-1px"}}>Private Vault 🔐</h2>
         {!vLocked&&(
           <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
             <div style={{position:"relative"}}>
@@ -53,11 +53,11 @@ export default function Vault() {
       )}
 
       {vLocked?(
-        <div style={{...glowGlass("#f43f5e",{textAlign:"center",padding:"50px 30px"})}}>
-          <div style={{fontSize:"58px",marginBottom:"13px"}}>🔒</div>
-          <h3 style={{fontFamily:"Syne",fontWeight:800,fontSize:"19px",color:T.text,margin:"0 0 6px"}}>Vault Locked</h3>
-          <p style={{color:T.muted,fontSize:"13px",marginBottom:"22px"}}>Enter your PIN to access private content</p>
-          <div style={{display:"flex",gap:"8px",maxWidth:"255px",margin:"0 auto"}}>
+        <div style={{...glowGlass("#f43f5e",{textAlign:"center",padding:"80px 40px",borderRadius:"36px",marginTop:"40px"})}}>
+          <div style={{fontSize:"82px",marginBottom:"20px",filter:`drop-shadow(0 12px 24px #f43f5e40)`}}>🔒</div>
+          <h3 style={{fontFamily:"Syne",fontWeight:800,fontSize:"32px",color:T.text,margin:"0 0 10px",letterSpacing:"-1px"}}>Vault Locked</h3>
+          <p style={{color:T.muted,fontSize:"16px",marginBottom:"32px"}}>Enter your PIN to access classified content</p>
+          <div style={{display:"flex",gap:"12px",maxWidth:"300px",margin:"0 auto"}}>
             <div style={{position:"relative",flex:1}}>
               <input type={showPinInput?"text":"password"} value={pinIn} onChange={e=>{setPinIn(e.target.value);}} onKeyDown={e=>e.key==="Enter"&&tryUnlock()} placeholder="Enter PIN" maxLength={8} style={{...inp({letterSpacing:"5px",textAlign:"center",paddingRight:"36px"})}}/>
               <button onClick={()=>setShowPinInput(v=>!v)} style={{position:"absolute",right:"9px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",color:T.muted,padding:0}}>{showPinInput?<EyeOff size={13}/>:<Eye size={13}/>}</button>
@@ -84,17 +84,17 @@ export default function Vault() {
           <div style={{flex:1,display:"flex",flexDirection:"column",gap:"9px"}}>
             {vActive!=null?(
               <>
-                <div style={{display:"flex",gap:"8px",flexShrink:0}}>
-                  <input value={vT} onChange={e=>setVT(e.target.value)} style={{...inp({fontFamily:"Syne",fontWeight:700,fontSize:"16px",flex:1})}} placeholder="Secret title..."/>
-                  <button onClick={saveVNote} style={{...btn(true,"#f43f5e")}}>{vSaved?<><Check size={13}/> Saved!</>:<><Copy size={13}/> Save</>}</button>
+                <div style={{display:"flex",gap:"10px",flexShrink:0}}>
+                  <input value={vT} onChange={e=>setVT(e.target.value)} style={{...inp({fontFamily:"Syne",fontWeight:800,fontSize:"28px",flex:1,background:"transparent",border:"none",padding:"0 10px"})}} placeholder="Secret title..."/>
+                  <button onClick={saveVNote} style={{...btn(true,"#f43f5e"),padding:"10px 20px"}}>{vSaved?<><Check size={15}/> Saved!</>:<><Copy size={15}/> Save</>}</button>
                 </div>
                 <BlockToolbar addFn={addVBlock}/>
                 <div style={{flex:1,overflowY:"auto",paddingRight:"4px"}}>
                   {renderBlocks(vBlocks,updateVBlock,delVBlock,handleVImage,handleVFile)}
-                  {vBlocks.length===0&&<div style={{color:T.muted,fontSize:"13px",textAlign:"center",padding:"28px 0"}}>Use the toolbar above to add content 👆</div>}
+                  {vBlocks.length===0&&<div style={{color:T.muted,fontSize:"14px",textAlign:"center",padding:"36px 0"}}>Use the toolbar above to inject classified intelligence 👆</div>}
                 </div>
               </>
-            ):<div style={{...glowGlass("#f43f5e"),flex:1,display:"flex",alignItems:"center",justifyContent:"center",color:T.muted,fontSize:"13px"}}>Select or create a secret 🔒</div>}
+            ):<div style={{...glowGlass("#f43f5e",{borderRadius:"32px"}),flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",color:T.muted,fontSize:"18px",fontFamily:"Syne",fontWeight:700}}><div style={{fontSize:"64px",marginBottom:"16px",filter:"drop-shadow(0 8px 16px #f43f5e40)"}}>🔒</div>Select or create a secret</div>}
           </div>
         </div>
       )}

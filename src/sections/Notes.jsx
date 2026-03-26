@@ -25,8 +25,8 @@ export default function Notes() {
         {activeNote!=null?(
           <>
             <div style={{display:"flex",gap:"9px",flexShrink:0}}>
-              <input value={nTitle} onChange={e=>setNTitle(e.target.value)} style={{...inp({fontFamily:"Syne",fontWeight:700,fontSize:"18px",flex:1})}} placeholder="Note title..."/>
-              <button onClick={saveNote} style={btn(true)}>{nSaved?<><Check size={13}/> Saved!</>:<><Copy size={13}/> Save</>}</button>
+              <input value={nTitle} onChange={e=>setNTitle(e.target.value)} style={{...inp({fontFamily:"Syne",fontWeight:800,fontSize:"28px",flex:1,background:"transparent",border:"none",padding:"0 10px"})}} placeholder="Note title..."/>
+              <button onClick={saveNote} style={{...btn(true),padding:"10px 20px"}}>{nSaved?<><Check size={15}/> Saved!</>:<><Copy size={15}/> Save</>}</button>
             </div>
             <BlockToolbar addFn={addBlock}/>
             <div style={{flex:1,overflowY:"auto",paddingRight:"4px"}}>
@@ -35,10 +35,10 @@ export default function Notes() {
             </div>
           </>
         ):(
-          <div style={{...glowGlass(accent),flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"12px",textAlign:"center"}}>
-            <div style={{fontSize:"48px"}}>📝</div>
-            <div style={{fontFamily:"Syne",fontSize:"18px",fontWeight:700,color:T.text}}>Select or create a note</div>
-            <button onClick={newNote} style={btn(true)}><Plus size={13}/> New Note</button>
+          <div style={{...glowGlass(accent),flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"16px",textAlign:"center",borderRadius:"32px"}}>
+            <div style={{fontSize:"82px",filter:`drop-shadow(0 10px 20px ${accent}40)`}}>📝</div>
+            <div style={{fontFamily:"Syne",fontSize:"28px",fontWeight:800,color:T.text,letterSpacing:"-1px"}}>Select or create a note</div>
+            <button onClick={newNote} style={{...btn(true),padding:"14px 28px",fontSize:"16px"}}><Plus size={16}/> New Note</button>
           </div>
         )}
       </div>

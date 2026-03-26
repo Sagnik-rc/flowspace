@@ -9,9 +9,11 @@ export default function Settings() {
           user, logout, setShowAuth } = useApp();
 
   return (
-    <div style={{maxWidth:"620px",margin:"0 auto"}}>
-      <h2 style={{fontFamily:"Syne",fontWeight:800,fontSize:"26px",color:T.text,margin:"0 0 4px"}}>Customize ✨</h2>
-      <p style={{color:T.muted,fontSize:"13px",marginBottom:"20px"}}>All settings apply instantly.</p>
+    <div style={{maxWidth:"620px",margin:"0 auto",paddingBottom:"40px"}}>
+      <div style={{marginBottom:"32px"}}>
+        <h2 style={{fontFamily:"Syne",fontWeight:800,fontSize:"42px",color:T.text,margin:"0 0 8px",letterSpacing:"-1px"}}>Customize ✨</h2>
+        <p style={{color:T.muted,fontSize:"16px",marginBottom:"0"}}>All settings apply instantly.</p>
+      </div>
 
       {/* Color Mode */}
       <div style={{...glass({marginBottom:"10px"})}}>

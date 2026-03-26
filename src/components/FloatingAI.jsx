@@ -28,9 +28,9 @@ export default function FloatingAI() {
             <div style={{ width: "31px", height: "31px", borderRadius: "50%", background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px", flexShrink: 0 }}>🤖</div>
             <div style={{ flex: 1 }}>
               <div style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "13px", color: T.text }}>FlowAI</div>
-              <div style={{ display: "flex", alignItems: "center", gap: "3px", marginTop: "1px" }}>
-                <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#00ff94" }}/>
-                <span style={{ color: T.muted, fontSize: "10px" }}>Powered by Claude</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "4px", marginTop: "1px" }}>
+                <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#00e5ff" }}/>
+                <span style={{ color: T.muted, fontSize: "10px", fontFamily: "Syne", fontWeight: 600 }}>Powered by Gemini</span>
               </div>
             </div>
             <button onClick={() => setFloatOpen(false)} style={{ background: `${accent}18`, border: `1px solid ${accent}30`, borderRadius: "7px", cursor: "pointer", color: T.muted, padding: "4px", display: "flex" }}><X size={12}/></button>
