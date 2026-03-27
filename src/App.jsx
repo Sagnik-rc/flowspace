@@ -1,6 +1,7 @@
 /* ─────────────────────────────────────────────────────────────────────────
    App.jsx  —  The main shell. Just wires everything together.
    All state lives in AppContext. All sections/modals are self-contained.
+───────────────────────────────────────────────────────────────────────── */
 import { useState } from "react";
 import { useApp } from "./context/AppContext";
 import { GFONTS } from "./constants";
@@ -11,6 +12,7 @@ import Sidebar       from "./components/Sidebar";
 import { TopBar }    from "./components/TopBar";
 import { StaticDock } from "./components/StaticDock";
 import FloatingAI    from "./components/FloatingAI";
+import { Footer }    from "./components/Footer";
 
 // Sections
 import Dashboard     from "./sections/Dashboard";
@@ -76,7 +78,7 @@ export default function App() {
             <div style={{ flex: 1 }}>
               {sec === "settings" ? <Settings/> : <ActiveSection/>}
             </div>
-            <MiniFooter />
+            <Footer />
           </main>
 
           <StaticDock/>
@@ -95,25 +97,8 @@ export default function App() {
       <SessionCompleteModal/>
       <LegalModal/>
       <FeedbackModal/>
+      <InfoModal/>
     </div>
-  );
-}
-
-function MiniFooter() {
-  const { T, accent } = useApp();
-  return (
-    <footer style={{ marginTop: "32px", padding: "16px 0", borderTop: `1px solid ${T.border}`, display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", opacity: 0.8, paddingBottom: "80px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <div style={{ width: "20px", height: "20px", borderRadius: "6px", background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", boxShadow: `0 0 8px ${accent}60` }}>🌊</div>
-        <span style={{ fontFamily: "Syne", fontWeight: 700, fontSize: "14px", color: T.text }}>FlowSpace</span>
-        <span style={{ color: T.muted, fontSize: "12px", marginLeft: "10px" }}>© {new Date().getFullYear()} • v1.0.0</span>
-      </div>
-      <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-        <button onClick={() => { setFeedbackTab("feedback"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, fontSize: "12px", transition: "color .2s", cursor: "pointer", padding: 0 }} onMouseEnter={e => e.target.style.color = T.text} onMouseLeave={e => e.target.style.color = T.muted}>Send Feedback</button>
-        <button onClick={() => { setFeedbackTab("issue"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, fontSize: "12px", transition: "color .2s", cursor: "pointer", padding: 0 }} onMouseEnter={e => e.target.style.color = T.text} onMouseLeave={e => e.target.style.color = T.muted}>Report Issue</button>
-        <button onClick={() => { setFeedbackTab("feature"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, fontSize: "12px", transition: "color .2s", cursor: "pointer", padding: 0 }} onMouseEnter={e => e.target.style.color = T.text} onMouseLeave={e => e.target.style.color = T.muted}>Request Feature</button>
-      </div>
-    </footer>
   );
 }
 
@@ -207,6 +192,22 @@ function FeedbackModal() {
             </button>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+function InfoModal() {
+  const { T, accent, infoOpen, setInfoOpen, infoTitle } = useApp();
+  if (!infoOpen) return null;
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "20px" }} onClick={() => setInfoOpen(false)}>
+      <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: "24px", width: "100%", maxWidth: "400px", padding: "40px", textAlign: "center", boxShadow: "0 24px 60px rgba(0,0,0,0.4)", position: "relative" }} onClick={e => e.stopPropagation()}>
+        <button onClick={() => setInfoOpen(false)} style={{ position: "absolute", top: "20px", right: "20px", background: T.inp, border: "none", color: T.muted, width: "32px", height: "32px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}><X size={16} /></button>
+        <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: `linear-gradient(135deg, ${accent}, #00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "32px", margin: "0 auto 24px", boxShadow: `0 12px 32px ${accent}50` }}>🚀</div>
+        <h2 style={{ fontFamily: "Syne", fontSize: "24px", fontWeight: "800", color: T.text, marginBottom: "12px" }}>{infoTitle}</h2>
+        <p style={{ color: T.muted, fontSize: "15px", marginBottom: "32px", lineHeight: "1.6" }}>We're currently building out this section. Check back in a future update to see what's new!</p>
+        <button onClick={() => setInfoOpen(false)} style={{ background: T.text, color: T.bg, border: "none", borderRadius: "100px", padding: "14px 28px", fontSize: "15px", fontWeight: "800", fontFamily: "Syne", cursor: "pointer", width: "100%", transition: "transform 0.2s" }} onMouseEnter={e => e.currentTarget.style.transform="scale(1.02)"} onMouseLeave={e => e.currentTarget.style.transform="scale(1)"}>Got it</button>
       </div>
     </div>
   );

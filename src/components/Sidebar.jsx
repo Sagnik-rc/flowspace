@@ -25,11 +25,11 @@ export default function Sidebar() {
     <aside
       onMouseEnter={onSideEnter}
       onMouseLeave={onSideLeave}
-      style={{ position: "fixed", left: 0, top: 0, height: "100vh", zIndex: 25, width: sideOpen ? "205px" : "0px", overflow: "hidden", background: T.sidebar, borderRight: sideOpen ? `1px solid ${T.border}` : "none", backdropFilter: "blur(28px)", WebkitBackdropFilter: "blur(28px)", display: "flex", flexDirection: "column", padding: sideOpen ? "17px 9px" : "0", gap: "3px", transition: "width .28s cubic-bezier(.4,0,.2,1),padding .28s", boxShadow: sideOpen ? "5px 0 40px rgba(0,0,0,.4)" : "none" }}
+      style={{ position: "fixed", left: 0, top: 0, height: "100vh", zIndex: 25, width: sideOpen ? "320px" : "0px", overflow: "hidden", background: T.sidebar, borderRight: sideOpen ? `1px solid ${T.border}` : "none", backdropFilter: "blur(28px)", WebkitBackdropFilter: "blur(28px)", display: "flex", flexDirection: "column", padding: sideOpen ? "17px 9px" : "0", gap: "3px", transition: "width .28s cubic-bezier(.4,0,.2,1),padding .28s", boxShadow: sideOpen ? "5px 0 40px rgba(0,0,0,.4)" : "none" }}
     >
       {/* Logo */}
       <div onClick={() => setSec("dashboard")} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 6px 24px", overflow: "hidden", flexShrink: 0, cursor: "pointer" }}>
-        <div style={{ width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", boxShadow: `0 0 20px ${accent}60` }}>🌊</div>
+        <img src="/flowspace.svg" alt="FlowSpace logo" style={{ width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 20px ${accent}60` }} />
         <span style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "20px", color: T.text, whiteSpace: "nowrap" }}>FlowSpace</span>
       </div>
 

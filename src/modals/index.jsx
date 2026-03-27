@@ -19,7 +19,7 @@ export function AuthModal() {
         <div style={{height:"3px",background:`linear-gradient(90deg,${accent},#00e5ff,#00ff94)`}}/>
         <div style={{padding:"30px"}}>
           <div style={{textAlign:"center",marginBottom:"24px"}}>
-            <div style={{width:"52px",height:"52px",borderRadius:"16px",background:`linear-gradient(135deg,${accent},#00e5ff)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"24px",margin:"0 auto 10px",boxShadow:`0 0 28px ${accent}50`}}>🌊</div>
+            <img src="/flowspace.svg" alt="FlowSpace logo" style={{ width: "52px", height: "52px", borderRadius: "16px", flexShrink: 0, background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 28px ${accent}50` }} />
             <div style={{fontFamily:"Syne",fontWeight:800,fontSize:"20px",color:T.text,marginBottom:"3px"}}>FlowSpace</div>
             <div style={{color:T.muted,fontSize:"13px"}}>{authTab==="login"?"Welcome back! 👋":"Create your account 🌊"}</div>
           </div>

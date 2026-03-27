@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useApp } from "../context/AppContext";
 import { Sparkles, Timer, Code2, Shield, ArrowRight, Zap, Target, BookOpen, Quote } from "lucide-react";
+import { Footer } from "../components/Footer";
 
 export default function Landing() {
-  const { T, accent, bodyFont, setShowAuth, setFeedbackTab, setShowFeedback, setLegalTab, setShowLegal } = useApp();
+  const { T, accent, bodyFont, setShowAuth } = useApp();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function Landing() {
       {/* ── Fixed Clean Header for Landing ────────────────────────────── */}
       <header style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "20px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", zIndex: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{ width: "38px", height: "38px", borderRadius: "10px", flexShrink: 0, background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", boxShadow: `0 0 16px ${accent}60` }}>🌊</div>
+          <img src="/flowspace.svg" alt="FlowSpace logo" style={{ width: "38px", height: "38px", borderRadius: "10px", flexShrink: 0, background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 16px ${accent}60` }} />
           <span style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "22px", color: T.text }}>FlowSpace</span>
         </div>
         <button onClick={() => setShowAuth(true)} style={{ background: `${accent}15`, border: `1px solid ${accent}40`, color: T.text, borderRadius: "12px", padding: "10px 24px", fontSize: "14px", fontWeight: "600", fontFamily: bodyFont, cursor: "pointer", display: "flex", alignItems: "center", gap: "8px", backdropFilter: "blur(10px)", transition: "all .2s" }}>
@@ -254,72 +255,8 @@ export default function Landing() {
 
       </div>
 
-      {/* ── GenZ Footer ────────────────────────────────────────── */}
-      <footer style={{ width: "100%", background: T.card, borderTop: `1px solid ${T.border}`, padding: "48px 40px", marginTop: "40px", position: "relative", zIndex: 10 }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "40px", justifyContent: "space-between", alignItems: "flex-start" }}>
-          
-          {/* Brand Info */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "300px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div style={{ width: "32px", height: "32px", borderRadius: "8px", flexShrink: 0, background: `linear-gradient(135deg,${accent},#00e5ff)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", boxShadow: `0 0 12px ${accent}60` }}>🌊</div>
-              <span style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "20px", color: T.text }}>FlowSpace</span>
-            </div>
-            <p style={{ color: T.muted, fontSize: "14px", lineHeight: "1.6" }}>The ultimate productivity sanctuary designed for students, developers, and creatives.</p>
-            <button onClick={() => window.open('https://buymeacoffee.com', '_blank')} style={{ background: "linear-gradient(135deg, #FFDD00, #FBB034)", border: "none", borderRadius: "8px", padding: "10px 16px", color: "#000", fontWeight: 800, fontFamily: "Syne", fontSize: "13px", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "8px", width: "fit-content", boxShadow: "0 4px 14px rgba(255, 221, 0, 0.4)", transition: "transform 0.2s" }} onMouseEnter={e => e.currentTarget.style.transform="scale(1.05)"} onMouseLeave={e => e.currentTarget.style.transform="scale(1)"}>
-              ☕ Buy us a coffee
-            </button>
-          </div>
-
-          {/* Links Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "40px", flex: 1, maxWidth: "700px" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <h4 style={{ color: T.text, fontFamily: "Syne", fontWeight: 700, fontSize: "15px", marginBottom: "8px" }}>🔥 Product</h4>
-              {["Explore Features", "Use Cases", "Pricing", "What’s New"].map(link => (
-                <button key={link} onClick={() => setShowAuth(true)} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>{link}</button>
-              ))}
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <h4 style={{ color: T.text, fontFamily: "Syne", fontWeight: 700, fontSize: "15px", marginBottom: "8px" }}>🌊 FlowSpace</h4>
-              {["About", "Mission", "Contact", "Support Us ☕"].map(link => (
-                <button key={link} onClick={() => setShowAuth(true)} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>{link}</button>
-              ))}
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <h4 style={{ color: T.text, fontFamily: "Syne", fontWeight: 700, fontSize: "15px", marginBottom: "8px" }}>🛠️ Resources</h4>
-              <button onClick={() => { setFeedbackTab("feedback"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Help Center</button>
-              <button onClick={() => { setFeedbackTab("feedback"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Productivity Tips</button>
-              <button onClick={() => { setFeedbackTab("feedback"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Blog</button>
-              <button onClick={() => { setFeedbackTab("issue"); setShowFeedback(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Report Issue</button>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <h4 style={{ color: T.text, fontFamily: "Syne", fontWeight: 700, fontSize: "15px", marginBottom: "8px" }}>⚖️ Legal</h4>
-              <button onClick={() => { setLegalTab("privacy"); setShowLegal(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Privacy Policy</button>
-              <button onClick={() => { setLegalTab("terms"); setShowLegal(true); }} style={{ background: "transparent", border: "none", color: T.muted, textAlign: "left", fontSize: "14px", padding: 0, cursor: "pointer", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = accent} onMouseLeave={e => e.target.style.color = T.muted}>Terms of Service</button>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Bottom Socials Bar */}
-        <div style={{ maxWidth: "1200px", margin: "48px auto 0", paddingTop: "24px", borderTop: `1px solid ${T.border}`, display: "flex", flexWrap: "wrap", gap: "20px", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ color: T.muted, fontSize: "13px" }}>© {new Date().getFullYear()} FlowSpace Inc. All rights reserved. • v1.0.0</div>
-          
-          <div style={{ display: "flex", gap: "12px" }}>
-            {/* X / Twitter */}
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" style={{ width: "36px", height: "36px", borderRadius: "10px", background: T.inp, border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .2s" }} onMouseEnter={e => { e.currentTarget.style.background = `${T.border}`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={e => { e.currentTarget.style.background = T.inp; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill={T.text}><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-            {/* Instagram */}
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" style={{ width: "36px", height: "36px", borderRadius: "10px", background: T.inp, border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .2s" }} onMouseEnter={e => { e.currentTarget.style.background = `#E1306C20`; e.currentTarget.style.borderColor = `#E1306C60`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={e => { e.currentTarget.style.background = T.inp; e.currentTarget.style.borderColor = T.border; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E1306C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            </a>
-            {/* Facebook */}
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" style={{ width: "36px", height: "36px", borderRadius: "10px", background: T.inp, border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all .2s" }} onMouseEnter={e => { e.currentTarget.style.background = `#1877F220`; e.currentTarget.style.borderColor = `#1877F260`; e.currentTarget.style.transform = "translateY(-2px)"; }} onMouseLeave={e => { e.currentTarget.style.background = T.inp; e.currentTarget.style.borderColor = T.border; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1877F2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-            </a>
-          </div>
-        </div>
-      </footer>
+      {/* ── Global GenZ Footer ────────────────────────────────────────── */}
+      <Footer />
     </div>
   );
 }

@@ -451,6 +451,8 @@ export function AppProvider({ children }) {
   const [legalTab, setLegalTab]   = useState("privacy"); // privacy, terms
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackTab, setFeedbackTab]   = useState("issue"); // issue, feature, general
+  const [infoOpen, setInfoOpen]   = useState(false);
+  const [infoTitle, setInfoTitle] = useState("");
 
   /* ── EXPOSE EVERYTHING ─────────────────────────────────────────────── */
   const value = {
@@ -510,6 +512,7 @@ export function AppProvider({ children }) {
     // Footer Modals
     showLegal, setShowLegal, legalTab, setLegalTab,
     showFeedback, setShowFeedback, feedbackTab, setFeedbackTab,
+    infoOpen, setInfoOpen, infoTitle, setInfoTitle,
     // Extra refs
     FREE_LIMITS, POM_FORMATS, LANGS, AUTO_LOCK_OPTIONS,
   };
